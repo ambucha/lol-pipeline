@@ -29,5 +29,12 @@ match = get(f"{BASE}/lol/match/v5/matches/{match_id}")
 
 folder = pathlib.Path("data/raw/matches")
 folder.mkdir(parents=True, exist_ok=True)
-(folder / f"{match_id}.json").write_text(json.dumps(match, indent=2))
-print("saved", match_id)
+
+for match_id in match_ids:
+    path = folder / f"{match_id}.json"
+    if path.exists():
+            print("already fetched", match_id)
+            continue
+    match = get(f"{BASE}/lol/match/v5/matches/{match_id}")
+    path.write_text(json.dumps(match, indent=2))
+    print("saved", match_id)
